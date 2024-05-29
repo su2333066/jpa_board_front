@@ -11,9 +11,9 @@ export default function LoginPage() {
   const login = async (e) => {
     e.preventDefault();
     if (!username) {
-      return alert("아이디를 입력하세요.");
+      return alert("아이디를 입력하세요");
     } else if (!password) {
-      return alert("비밀번호를 입력하세요.");
+      return alert("비밀번호를 입력하세요");
     }
 
     let formData = new FormData();

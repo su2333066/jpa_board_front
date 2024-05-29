@@ -13,9 +13,9 @@ export default function JoinPage() {
   const join = async (e) => {
     e.preventDefault();
     if (!username) {
-      return alert("아이디를 입력하세요.");
+      return alert("아이디를 입력하세요");
     } else if (!password) {
-      return alert("비밀번호를 입력하세요.");
+      return alert("비밀번호를 입력하세요");
     }
 
     await axios
@@ -36,7 +36,7 @@ export default function JoinPage() {
             }
           }
         } else if (res.data.msg === "duplicateError") {
-          alert("중복된 아이디입니다.");
+          alert("중복된 아이디입니다");
         } else {
           alert("회원가입 성공!!");
           navigate("/");
