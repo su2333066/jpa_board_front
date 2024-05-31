@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -16,7 +16,7 @@ export default function JoinPage() {
 
   const duplicateUsernameCheck = async () => {
     if (!username) {
-      alert("아이디와 닉네임은 필수 입력 값입니다.");
+      alert("아이디는 필수 입력 값입니다.");
       return;
     }
 
@@ -26,13 +26,14 @@ export default function JoinPage() {
         setDuplicateUsername(false);
       } else {
         alert("중복된 아이디입니다.");
+        setDuplicateUsername(true);
       }
     });
   };
 
   const duplicateNicknameCheck = async () => {
     if (!username) {
-      alert("아이디와 닉네임은 필수 입력 값입니다.");
+      alert("닉네임은 필수 입력 값입니다.");
       return;
     }
 
@@ -42,8 +43,39 @@ export default function JoinPage() {
         setDuplicateNickname(false);
       } else {
         alert("중복된 닉네임입니다.");
+        setDuplicateNickname(true);
       }
     });
+  };
+
+  const validateCheck = async () => {
+    await axios
+      .post("/api/auth/join/check", {
+        username: username,
+        password: password,
+        nickname: nickname,
+      })
+      .then((res) => {
+        console.log(res);
+        setValidUsername("");
+        setValidPassword("");
+        setValidNickname("");
+
+        if (res.data.msg === "fail") {
+          for (const key of Object.keys(res.data.validatorResult)) {
+            if (key === "valid_username") {
+              setValidUsername(res.data.validatorResult.valid_username);
+            } else if (key === "valid_password") {
+              setValidPassword(res.data.validatorResult.valid_password);
+            } else if (key === "valid_nickname") {
+              setValidNickname(res.data.validatorResult.valid_nickname);
+            }
+          }
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   const join = async (e) => {
@@ -56,6 +88,7 @@ export default function JoinPage() {
 
     if (duplicateUsername || duplicateNickname) {
       alert("중복체크는 필수입니다.");
+      return;
     }
 
     await axios
@@ -65,30 +98,23 @@ export default function JoinPage() {
         nickname: nickname,
       })
       .then((res) => {
-        console.log(res);
-
-        if (res.data.msg === "fail") {
-          setValidUsername("");
-          setValidPassword("");
-          setValidNickname("");
-          for (const key of Object.keys(res.data.validatorResult)) {
-            if (key === "valid_username") {
-              setValidUsername(res.data.validatorResult.valid_username);
-            } else if (key === "valid_password") {
-              setValidPassword(res.data.validatorResult.valid_password);
-            } else {
-              setValidNickname(res.data.validatorResult.valid_nickname);
-            }
-          }
-        } else {
+        if (res.data.msg === "success") {
           alert("회원가입 성공!!");
           navigate("/");
+        } else {
+          alert("회원가입 실패!!");
         }
       })
       .catch((e) => {
         console.log(e);
       });
   };
+
+  useEffect(() => {
+    setDuplicateUsername(true);
+    setDuplicateNickname(true);
+    validateCheck();
+  }, [username, password, nickname]);
 
   return (
     <>
@@ -110,15 +136,17 @@ export default function JoinPage() {
               }}
             />
             <p className="px-2 text-red-500">{validUsername}</p>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                duplicateUsernameCheck();
-              }}
-              className="absolute right-0 top-3 bg-blue-400 p-1 mr-2 rounded-md"
-            >
-              중복체크
-            </button>
+            {!validUsername && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  duplicateUsernameCheck();
+                }}
+                className="absolute right-0 top-3 bg-blue-400 p-1 mr-2 rounded-md"
+              >
+                중복체크
+              </button>
+            )}
           </div>
 
           <div className="py-4 relative">
@@ -134,15 +162,17 @@ export default function JoinPage() {
               }}
             />
             <p className="px-2 text-red-500">{validNickname}</p>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                duplicateNicknameCheck();
-              }}
-              className="absolute right-0 top-3 bg-blue-400 p-1 mr-2 rounded-md"
-            >
-              중복체크
-            </button>
+            {!validNickname && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  duplicateNicknameCheck();
+                }}
+                className="absolute right-0 top-3 bg-blue-400 p-1 mr-2 rounded-md"
+              >
+                중복체크
+              </button>
+            )}
           </div>
 
           <div className="py-4">

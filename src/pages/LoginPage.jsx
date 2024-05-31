@@ -1,31 +1,35 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { setCookie } from "../common/Cookie";
 
 export default function LoginPage() {
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setUser({ ...user, [id]: value });
+  };
 
   const login = async (e) => {
     e.preventDefault();
-    if (!username) {
-      return alert("아이디를 입력하세요");
-    } else if (!password) {
-      return alert("비밀번호를 입력하세요");
+    try {
+      const response = await axios.post("/api/auth/login", user);
+      if (response.status !== 200) {
+        throw new Error("아이디 or 비밀번호 오류");
+      }
+
+      setCookie("accessToken", response.data);
+
+      navigate("/");
+    } catch (error) {
+      console.error("Error", error);
     }
-
-    let formData = new FormData();
-    formData.append("username", username);
-    formData.append("password", password);
-
-    await axios
-      .post("/api/login", formData)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch(() => {});
   };
 
   return (
@@ -42,9 +46,8 @@ export default function LoginPage() {
             <input
               className="px-2 rounded-md"
               type="text"
-              onChange={(e) => {
-                setUsername(e.target.value);
-              }}
+              id="username"
+              onChange={handleChange}
             />
           </div>
           <div className="py-4">
@@ -54,9 +57,8 @@ export default function LoginPage() {
             <input
               className="px-2 rounded-md"
               type="password"
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
+              id="password"
+              onChange={handleChange}
             />
           </div>
           <div className="flex justify-center p-4">
