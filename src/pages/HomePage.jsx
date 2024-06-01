@@ -12,7 +12,7 @@ function HomePage() {
 
   useEffect(() => {
     if (getCookie("accessToken")) setIsLogin(true);
-  }, []);
+  }, [isLogin]);
 
   return (
     <div>
