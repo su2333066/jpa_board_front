@@ -28,44 +28,33 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center">
-      <div className="bg-blue-100 rounded-sm p-8">
-        <div className="py-4">
-          <label className="px-2" htmlFor="username">
-            아이디 :
-          </label>
-          <input
-            className="px-2 rounded-md"
-            type="text"
-            id="username"
-            onChange={handleChange}
-          />
-        </div>
-        <div className="py-4">
-          <label className="px-2" htmlFor="password">
-            비밀번호 :
-          </label>
-          <input
-            className="px-2 rounded-md"
-            type="password"
-            id="password"
-            onChange={handleChange}
-          />
-        </div>
-        <div className="flex justify-center p-4">
-          <button
-            onClick={() => {
-              navigate("/");
-            }}
-            className="bg-blue-300 rounded-md p-4 mr-4"
-          >
-            목록
-          </button>
-          <button onClick={login} className="bg-blue-300 rounded-md p-4 ml-4">
-            로그인
-          </button>
-        </div>
-      </div>
-    </div>
+    <main>
+      <fieldset>
+        <input
+          type="text"
+          placeholder="아이디"
+          id="username"
+          onChange={handleChange}
+        />
+      </fieldset>
+      <fieldset>
+        <input
+          type="password"
+          placeholder="비밀번호"
+          id="password"
+          onChange={handleChange}
+        />
+      </fieldset>
+      <fieldset>
+        <button onClick={login}>로그인</button>
+        <button
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          목록
+        </button>
+      </fieldset>
+    </main>
   );
 }

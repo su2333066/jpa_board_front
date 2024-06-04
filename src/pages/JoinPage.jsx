@@ -131,73 +131,49 @@ export default function JoinPage() {
   }, [user.nickname]);
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center">
-      <div className="bg-blue-100 rounded-sm p-8 w-1/2">
-        <div className="py-4 relative ">
-          <label className="px-2" htmlFor="username">
-            아이디 :
-          </label>
-          <input
-            className="px-2 rounded-md"
-            type="text"
-            id="username"
-            onChange={handleChange}
-          />
-          <p className="w-full h-2 p-2 text-red-500">{validUsername}</p>
-          <button
-            onClick={duplicateUsernameCheck}
-            className="absolute right-0 top-3 bg-blue-400 p-1 mr-2 rounded-md"
-          >
-            중복체크
-          </button>
-        </div>
+    <main>
+      <fieldset>
+        <input
+          type="text"
+          placeholder="아이디"
+          id="username"
+          onChange={handleChange}
+        />
+        <button onClick={duplicateUsernameCheck}>중복</button>
+      </fieldset>
+      <div className="validation">{validUsername}</div>
 
-        <div className="py-4 relative">
-          <label className="px-2" htmlFor="nickname">
-            닉네임 :
-          </label>
-          <input
-            className="px-2 rounded-md"
-            type="text"
-            id="nickname"
-            onChange={handleChange}
-          />
-          <p className="w-full h-2 p-2 text-red-500">{validNickname}</p>
-          <button
-            onClick={duplicateNicknameCheck}
-            className="absolute right-0 top-3 bg-blue-400 p-1 mr-2 rounded-md"
-          >
-            중복체크
-          </button>
-        </div>
+      <fieldset>
+        <input
+          type="text"
+          placeholder="닉네임"
+          id="nickname"
+          onChange={handleChange}
+        />
+        <button onClick={duplicateNicknameCheck}>중복</button>
+      </fieldset>
+      <div>{validNickname}</div>
 
-        <div className="py-4">
-          <label className="px-2" htmlFor="password">
-            비밀번호 :
-          </label>
-          <input
-            className="px-2 rounded-md"
-            type="password"
-            id="password"
-            onChange={handleChange}
-          />
-          <p className="w-full h-2 p-2 text-red-500">{validPassword}</p>
-        </div>
+      <fieldset>
+        <input
+          type="password"
+          placeholder="비밀번호"
+          id="password"
+          onChange={handleChange}
+        />
+      </fieldset>
+      <div>{validPassword}</div>
 
-        <div className="flex justify-center p-4">
-          <button
-            onClick={() => {
-              navigate("/");
-            }}
-            className="bg-blue-300 rounded-md p-4 mr-4"
-          >
-            목록
-          </button>
-          <button onClick={join} className="bg-blue-300 rounded-md p-4 ml-4">
-            회원가입
-          </button>
-        </div>
-      </div>
-    </div>
+      <fieldset>
+        <button onClick={join}>회원가입</button>
+        <button
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          목록
+        </button>
+      </fieldset>
+    </main>
   );
 }

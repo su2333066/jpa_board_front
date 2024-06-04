@@ -15,36 +15,33 @@ function HomePage() {
   }, [isLogin]);
 
   return (
-    <div>
+    <main>
       {!isLogin ? (
-        <Button
-          variant="contained"
+        <button
           onClick={() => {
             navigate("/login");
           }}
         >
           로그인
-        </Button>
+        </button>
       ) : (
-        <Button
-          variant="contained"
+        <button
           onClick={() => {
             removeCookie("accessToken");
             setIsLogin(false);
           }}
         >
           로그아웃
-        </Button>
+        </button>
       )}
-      <Button
-        variant="contained"
+      <button
         onClick={() => {
           navigate("/join");
         }}
       >
         회원가입
-      </Button>
-    </div>
+      </button>
+    </main>
   );
 }
 
